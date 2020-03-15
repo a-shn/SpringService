@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="fileUploader" class="com.company.services.FileUploaderImpl">
+        <constructor-arg name="directory" value="/home/xiu-xiu/Desktop/SpringServiceFileFolder"/>
+        <constructor-arg name="fileRepository" ref="fileRepository"/>
+        <constructor-arg name="storageFilenameGenerator" ref="storageFilenameGenerator"/>
+    </bean>
+
+    <bean id="storageFilenameGenerator" class="com.company.services.StorageFilenameGenerator"/>
+
+
+    <bean id="signUpService" class="com.company.services.SignUpServiceImpl">
+        <constructor-arg name="signUpPool" ref="signUpPool"/>
+        <constructor-arg name="emailSender" ref="emailSender"/>
+        <constructor-arg name="userRepository" ref="userRepository"/>
+    </bean>
+
+    <bean id="emailSender" class="com.company.services.EmailSender">
+    </bean>
+
+    <bean id="signUpPool" class="com.company.services.SignUpPool">
+        <constructor-arg name="userRepository" ref="userRepository"/>
+    </bean>
+
+    <bean id="fileRepository" class="com.company.repositories.FileJdbcTemplateImpl">
+        <constructor-arg name="template" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="userRepository" class="com.company.repositories.UserJdbcTemplateImpl">
+        <constructor-arg name="template" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg name="dataSource" ref="driverManagerDataSource"/>
+    </bean>
+
+    <bean id="driverManagerDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="username" value="postgres"/>
+        <property name="password" value="555"/>
+        <property name="url" value="jdbc:postgresql://localhost:5432/course_project"/>
+    </bean>
+
+    <bean id="hikariDataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <constructor-arg name="configuration" ref="hikariConfig"/>
+    </bean>
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="org.postgresql.Driver"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="555"/>
+        <property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/course_project"/>
+    </bean>
+</beans>
